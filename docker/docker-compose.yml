@@ -1,0 +1,44 @@
+# Comment2Shell - CVE-2026-93485 Local Lab
+# Vulnerable WordPress 7.1.0 (pre-patch)
+# Uses host networking to bypass Docker bridge issues
+#
+# Usage:
+#   docker compose up -d
+#   Target: http://localhost:80
+#   Admin:  admin / Password123!
+#   Then:   python3 comment2shell.py -t http://localhost -c "id"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: comment2shell-db
+    network_mode: host
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp
+      MYSQL_PASSWORD: wppass
+      MYSQL_ROOT_PASSWORD: rootpass
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: unless-stopped
+    command: --port=3307 --bind-address=127.0.0.1
+
+  wordpress:
+    image: wordpress:7.1.0
+    container_name: comment2shell-lab
+    network_mode: host
+    environment:
+      WORDPRESS_DB_HOST: 127.0.0.1:3307
+      WORDPRESS_DB_USER: wp
+      WORDPRESS_DB_PASSWORD: wppass
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: "1"
+    volumes:
+      - wp_data:/var/www/html
+    depends_on:
+      - db
+    restart: unless-stopped
+
+volumes:
+  wp_data:
+  db_data:

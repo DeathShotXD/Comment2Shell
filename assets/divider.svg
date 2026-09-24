@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="14" viewBox="0 0 800 14" role="img" aria-label="">
+  <defs>
+    <linearGradient id="dg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#D0E25B" stop-opacity="0"/>
+      <stop offset="0.35" stop-color="#D0E25B"/>
+      <stop offset="0.65" stop-color="#7E65CD"/>
+      <stop offset="1" stop-color="#7E65CD" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="sparkL" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#D0E25B" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#D0E25B"/>
+      <stop offset="1" stop-color="#D0E25B" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="sparkR" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#B8A7D3" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#B8A7D3"/>
+      <stop offset="1" stop-color="#B8A7D3" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="40" y="6" width="720" height="2" fill="#2E2A2A"/>
+  <rect x="40" y="5.5" width="720" height="3" fill="url(#dg)" opacity="0.6"/>
+  <rect x="40" y="5" width="90" height="4" fill="url(#sparkL)">
+    <animateTransform attributeName="transform" type="translate" from="0 0" to="630 0" dur="3.4s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="40" y="5" width="90" height="4" fill="url(#sparkR)">
+    <animateTransform attributeName="transform" type="translate" from="630 0" to="0 0" dur="3.4s" begin="1.7s" repeatCount="indefinite"/>
+  </rect>
+  <circle cx="40" cy="7" r="3" fill="#D0E25B"/>
+  <circle cx="760" cy="7" r="3" fill="#7E65CD"/>
+</svg>

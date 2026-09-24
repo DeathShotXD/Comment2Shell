@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="180" viewBox="0 0 960 180" role="img" aria-label="Anonymous comment, wpautop bug, zero-click XSS, admin view, remote code execution">
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7E65CD"/>
+    </marker>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#7E65CD" stroke-width="0.6" opacity="0.12"/>
+    </pattern>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="180" rx="10" fill="#0A080D"/>
+  <rect x="0" y="0" width="960" height="180" rx="10" fill="url(#grid)"/>
+  <rect x="0.5" y="0.5" width="959" height="179" rx="10" fill="none" stroke="#2E2A2A" stroke-width="1"/>
+
+  <g font-family="ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace">
+    <rect x="16" y="36" width="150" height="56" rx="8" fill="#17141C" stroke="#7E65CD" stroke-width="2"/>
+    <text x="91" y="60" text-anchor="middle" font-size="15" font-weight="bold" fill="#D0E25B">1 COMMENT</text>
+    <text x="91" y="79" text-anchor="middle" font-size="11" fill="#B8A7D3">anon POST</text>
+
+    <rect x="202" y="36" width="150" height="56" rx="8" fill="#17141C" stroke="#7E65CD" stroke-width="2"/>
+    <text x="277" y="60" text-anchor="middle" font-size="15" font-weight="bold" fill="#D0E25B">2 THE BUG</text>
+    <text x="277" y="79" text-anchor="middle" font-size="11" fill="#B8A7D3">wpautop()</text>
+
+    <rect x="388" y="36" width="150" height="56" rx="8" fill="#17141C" stroke="#7E65CD" stroke-width="2"/>
+    <text x="463" y="60" text-anchor="middle" font-size="15" font-weight="bold" fill="#D0E25B">3 XSS</text>
+    <text x="463" y="79" text-anchor="middle" font-size="11" fill="#B8A7D3">autofocus</text>
+
+    <rect x="574" y="36" width="150" height="56" rx="8" fill="#17141C" stroke="#7E65CD" stroke-width="2"/>
+    <text x="649" y="60" text-anchor="middle" font-size="15" font-weight="bold" fill="#D0E25B">4 ADMIN VIEW</text>
+    <text x="649" y="79" text-anchor="middle" font-size="11" fill="#B8A7D3">admin cookie</text>
+
+    <rect x="756" y="32" width="158" height="64" rx="10" fill="none" stroke="#E14B4B" stroke-width="1.5">
+      <animate attributeName="opacity" values="0.9;0.15;0.9" dur="1.6s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="760" y="36" width="150" height="56" rx="8" fill="#17141C" stroke="#E14B4B" stroke-width="2"/>
+    <text x="835" y="60" text-anchor="middle" font-size="15" font-weight="bold" fill="#D0E25B" filter="url(#glow)">5 RCE</text>
+    <text x="835" y="79" text-anchor="middle" font-size="11" fill="#B8A7D3">plugin upload</text>
+
+    <line x1="168" y1="64" x2="198" y2="64" stroke="#7E65CD" stroke-width="2" marker-end="url(#arw)" stroke-dasharray="6 6">
+      <animate attributeName="stroke-dashoffset" from="12" to="0" dur="0.8s" repeatCount="indefinite"/>
+    </line>
+    <line x1="354" y1="64" x2="384" y2="64" stroke="#7E65CD" stroke-width="2" marker-end="url(#arw)" stroke-dasharray="6 6">
+      <animate attributeName="stroke-dashoffset" from="12" to="0" dur="0.8s" repeatCount="indefinite"/>
+    </line>
+    <line x1="540" y1="64" x2="570" y2="64" stroke="#7E65CD" stroke-width="2" marker-end="url(#arw)" stroke-dasharray="6 6">
+      <animate attributeName="stroke-dashoffset" from="12" to="0" dur="0.8s" repeatCount="indefinite"/>
+    </line>
+    <line x1="726" y1="64" x2="756" y2="64" stroke="#7E65CD" stroke-width="2" marker-end="url(#arw)" stroke-dasharray="6 6">
+      <animate attributeName="stroke-dashoffset" from="12" to="0" dur="0.8s" repeatCount="indefinite"/>
+    </line>
+
+    <circle r="3.2" cy="64" fill="#D0E25B" filter="url(#glow)">
+      <animate attributeName="cx" values="168;194" dur="1.6s" begin="0s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="3.2" cy="64" fill="#D0E25B" filter="url(#glow)">
+      <animate attributeName="cx" values="354;380" dur="1.6s" begin="0.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="3.2" cy="64" fill="#D0E25B" filter="url(#glow)">
+      <animate attributeName="cx" values="540;566" dur="1.6s" begin="0.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="3.2" cy="64" fill="#D0E25B" filter="url(#glow)">
+      <animate attributeName="cx" values="726;752" dur="1.6s" begin="1.2s" repeatCount="indefinite"/>
+    </circle>
+
+    <text x="480" y="144" text-anchor="middle" font-size="13" fill="#635F59">one anonymous comment -&gt; one admin page view -&gt; command output</text>
+  </g>
+</svg>

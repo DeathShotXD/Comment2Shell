@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="64" viewBox="0 0 960 64" role="img" aria-label="CVE-2026-93485, CVSS 7.1 HIGH, pre-auth, zero-click, fixed in 7.1.1">
+  <defs>
+    <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FEF9E5" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#FEF9E5" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#FEF9E5" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1.4" fill="#FEF9E5" opacity="0.03"/>
+    </pattern>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="960" height="64" rx="10" fill="#0A080D"/>
+  <rect x="0" y="0" width="960" height="64" rx="10" fill="url(#scan)"/>
+  <rect x="0.5" y="0.5" width="959" height="63" rx="10" fill="none" stroke="#2E2A2A" stroke-width="1"/>
+  <circle cx="34" cy="32" r="5" fill="#D0E25B" filter="url(#glow)">
+    <animate attributeName="opacity" values="1;0.2;1" dur="1.6s" repeatCount="indefinite"/>
+  </circle>
+  <text x="52" y="38" font-family="ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace" font-size="17" filter="url(#glow)">
+    <tspan fill="#D0E25B" font-weight="bold">CVE-2026-93485</tspan>
+    <tspan fill="#4D3F3A"> | </tspan>
+    <tspan fill="#FEF9E5">CVSS </tspan><tspan fill="#E14B4B" font-weight="bold">7.1 HIGH</tspan>
+    <tspan fill="#4D3F3A"> | </tspan>
+    <tspan fill="#B8A7D3" font-weight="bold">PRE-AUTH</tspan>
+    <tspan fill="#4D3F3A"> | </tspan>
+    <tspan fill="#FEF9E5">ZERO-CLICK</tspan>
+    <tspan fill="#4D3F3A"> | </tspan>
+    <tspan fill="#FEF9E5">WP 4.7.0-7.1.0</tspan>
+    <tspan fill="#4D3F3A"> | </tspan>
+    <tspan fill="#7E65CD">FIXED 7.1.1</tspan>
+  </text>
+  <rect x="-160" y="0" width="140" height="64" fill="url(#sheen)">
+    <animateTransform attributeName="transform" type="translate" from="0 0" to="1120 0" dur="5s" repeatCount="indefinite"/>
+  </rect>
+</svg>
