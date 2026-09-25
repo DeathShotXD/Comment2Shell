@@ -18,16 +18,11 @@ License: MIT
 
 import argparse
 import html
-import http.client
-import http.cookies
 import json
 import os
 import random
 import re
-import socket
-import ssl
 import string
-import struct
 import sys
 import time
 import urllib.error
