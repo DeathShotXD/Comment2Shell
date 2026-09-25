@@ -407,6 +407,7 @@ Comment2Shell/
 |-- comment2shell.py      scan, probe, exploit, shell, IOC check
 |-- README.md
 |-- PLAN.md               weekly maintenance plan
+|-- SECURITY.md           disclosure policy
 |-- BROWSER_VALIDATION.md manual browser validation steps
 |-- docker/               vulnerable WordPress 7.1.0 lab
 |   |-- docker-compose.yml
