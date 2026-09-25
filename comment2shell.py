@@ -588,46 +588,56 @@ def cleanup_shell(base_url, shell_path, proxy=None, timeout=10):
 
 def check_ioc_remote(base_url, timeout=10, proxy=None):
     """
-    Remote IOC check (without server log access):
-    - Look for suspicious plugin directories (single-file PHP plugins)
-    - Look for plugins with system/exec patterns
+    Remote IOC check without server log access.
+
+    Returns (findings, notes). Findings are suspected compromises; notes
+    describe checks that could not run, such as the plugin directory
+    listing being disabled, which is the default on WordPress.
     """
-    iocs = []
+    findings = []
+    notes = []
+
+    handlers = []
+    if proxy:
+        handlers.append(urllib.request.ProxyHandler({"http": proxy, "https": proxy}))
+    opener = urllib.request.build_opener(*handlers)
+
+    dirs = []
+    url = f"{base_url}/wp-content/plugins/"
     try:
-        url = f"{base_url}/wp-content/plugins/"
-        handlers = []
-        if proxy:
-            handlers.append(urllib.request.ProxyHandler({"http": proxy, "https": proxy}))
-        opener = urllib.request.build_opener(*handlers)
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with opener.open(req, timeout=timeout) as resp:
             body = resp.read(65536).decode("utf-8", errors="ignore")
-
-        # Directory listing - look for single-char or short random dirs
         dirs = re.findall(r'href="([^"?/]+)/"', body)
-        for d in dirs:
-            if d in ("akismet", "hello.php", "hello-dolly", "index.php"):
-                continue
-            if len(d) <= 2 and re.match(r"^[a-z0-9]+$", d):
-                iocs.append(f"Suspicious short plugin dir: wp-content/plugins/{d}/")
-
-        # Known shell filenames inside short dirs
-        for d in dirs:
-            if len(d) <= 2:
-                probe = f"{base_url}/wp-content/plugins/{d}/{d}.php?c=id"
-                try:
-                    req2 = urllib.request.Request(probe, headers={"User-Agent": "Mozilla/5.0"})
-                    with opener.open(req2, timeout=5) as r2:
-                        b2 = r2.read(4096).decode("utf-8", errors="ignore")
-                        if "uid=" in b2:
-                            iocs.append(f"ACTIVE WEBSHELL: {probe}")
-                except Exception:
-                    pass
-
+    except urllib.error.HTTPError as e:
+        if e.code in (403, 404):
+            notes.append(f"Plugin directory listing disabled (HTTP {e.code})")
+        else:
+            notes.append(f"Plugin listing request failed (HTTP {e.code})")
     except Exception as e:
-        iocs.append(f"Error during IOC check: {e}")
+        notes.append(f"Plugin listing request failed: {e}")
 
-    return iocs
+    # Look for single-file plugin directories. The tool's payloads use a
+    # six character [a-z0-9] directory holding a same-name PHP file, but
+    # any short random directory is worth probing.
+    for d in dirs:
+        if d in ("akismet", "hello.php", "hello-dolly", "index.php"):
+            continue
+        if not re.fullmatch(r"[a-z0-9]+", d):
+            continue
+        if len(d) <= 2:
+            findings.append(f"Suspicious short plugin dir: wp-content/plugins/{d}/")
+        if len(d) <= 6:
+            probe = f"{base_url}/wp-content/plugins/{d}/{d}.php?c=id"
+            try:
+                req2 = urllib.request.Request(probe, headers={"User-Agent": "Mozilla/5.0"})
+                with opener.open(req2, timeout=5) as r2:
+                    if "uid=" in r2.read(4096).decode("utf-8", errors="ignore"):
+                        findings.append(f"ACTIVE WEBSHELL: {probe}")
+            except Exception:
+                pass
+
+    return findings, notes
 
 
 # -- Scanner ------------------------------------------------------------------
@@ -1171,16 +1181,20 @@ Exploit flow (-t + -c):
 
     # -- IOC MODE --
     if args.ioc:
+        total = 0
         for t in targets:
             base = normalize_url(t)
             log("info", f"Checking IOCs on {base}")
-            iocs = check_ioc_remote(base, timeout=args.timeout, proxy=args.proxy)
-            if iocs:
-                for i in iocs:
+            findings, notes = check_ioc_remote(base, timeout=args.timeout, proxy=args.proxy)
+            for n in notes:
+                log("info", n)
+            if findings:
+                for i in findings:
                     log("vuln", i)
+                total += len(findings)
             else:
                 log("ok", "No IOCs detected")
-        sys.exit(0)
+        sys.exit(1 if total else 0)
 
     # -- SHELL MODE --
     if args.shell:
