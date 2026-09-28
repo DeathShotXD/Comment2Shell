@@ -1,0 +1,13 @@
+# Example target list for the batch scan.
+#
+#   python3 comment2shell.py --scan -f targets.example.txt --threads 20
+#
+# One URL per line. Blank lines and lines starting with # are ignored.
+# Only list hosts you are authorized to test.
+
+https://wordpress.example.com
+https://blog.example.org
+http://staging.example.net
+https://shop.example.io
+
+# Add your own in-scope hosts below.
