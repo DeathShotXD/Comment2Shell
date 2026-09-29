@@ -165,6 +165,18 @@ subfinder -d targets.txt | httpx -title | \
 python3 comment2shell.py --scan -t https://target.com --json -o results.json
 ```
 
+Each result object carries these fields:
+
+| Field | Meaning |
+|-------|---------|
+| `target` | the normalized target URL |
+| `wordpress` | true when WordPress was detected |
+| `version` | the detected version, or null |
+| `version_method` | how the version was found, for example `meta` or `readme` |
+| `vulnerable` | true, false, or null when the version is unknown |
+| `post_id` | a commentable post ID, or null |
+| `error` | an error string, or null |
+
 ### Active XSS probe
 
 ```bash
