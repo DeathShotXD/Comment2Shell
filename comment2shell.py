@@ -637,11 +637,31 @@ def check_ioc_remote(base_url, timeout=10, proxy=None):
 
 # -- Scanner ------------------------------------------------------------------
 
+def _reachable(base, timeout=10, proxy=None):
+    """Return True when the host answers at all, including an error status."""
+    handlers = []
+    if proxy:
+        handlers.append(urllib.request.ProxyHandler({"http": proxy, "https": proxy}))
+    opener = urllib.request.build_opener(*handlers)
+    req = urllib.request.Request(base + "/", headers={"User-Agent": "Mozilla/5.0"})
+    try:
+        opener.open(req, timeout=timeout)
+        return True
+    except urllib.error.HTTPError:
+        return True
+    except Exception:
+        return False
+
+
 def scan_single(target, timeout=10, proxy=None, verbose=False):
     """Scan a single target. Returns dict."""
     base = normalize_url(target)
     result = {"target": base, "version": None, "vulnerable": None,
               "wordpress": False, "error": None, "post_id": None}
+
+    if not _reachable(base, timeout=timeout, proxy=proxy):
+        result["error"] = "unreachable"
+        return result
 
     ver, method = detect_version(base, timeout=timeout)
     if ver:
@@ -687,6 +707,8 @@ def run_scan(targets, threads=10, timeout=10, proxy=None):
                     log("warn", f"{r['target']}  WP (version unknown)  [?]")
                 elif r["wordpress"]:
                     log("info", f"{r['target']}  WP {r['version']}  [patched/unknown]")
+                elif r.get("error") == "unreachable":
+                    log("warn", f"{r['target']}  unreachable")
                 else:
                     if "--verbose" in sys.argv or "-v" in sys.argv:
                         log("info", f"{r['target']}  not WordPress")
@@ -1147,8 +1169,10 @@ Exploit flow (-t + -c):
 
         vuln_count = sum(1 for r in results if r["vulnerable"] is True)
         wp_count = sum(1 for r in results if r["wordpress"])
+        unreachable = sum(1 for r in results if r.get("error") == "unreachable")
         print()
-        log("info", f"Results: {vuln_count} vulnerable / {wp_count} WordPress / {len(results)} total")
+        log("info", f"Results: {vuln_count} vulnerable / {wp_count} WordPress / "
+                    f"{unreachable} unreachable / {len(results)} total")
 
         if args.json or args.output:
             output = json.dumps(results, indent=2)
