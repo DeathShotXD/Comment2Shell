@@ -16,6 +16,7 @@ Changelog and the project uses semantic versioning.
 ### Added
 
 - SECURITY.md with the disclosure process and scope.
+- targets.example.txt and documentation for the JSON output fields.
 
 ## 1.0.0 - 2026-09-23
 
