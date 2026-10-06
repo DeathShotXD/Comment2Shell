@@ -49,10 +49,10 @@ and a defensive IOC check.
 
 ## Why this matters
 
-WordPress runs a large share of the web and `wpautop()` is core code, so
+WordPress powers a large share of the web and `wpautop()` is core code, so
 the vulnerable filter ships on every affected install regardless of theme
 or plugin. The XSS is stored, pre-authentication, and zero-click. Because
-it executes in the admin session it is more than a defacement bug: the
+it executes in the admin session, it is more than a defacement bug: the
 admin cookie is enough to install a plugin, and installing a plugin is
 arbitrary code execution.
 
@@ -144,7 +144,7 @@ cd Comment2Shell
 python3 comment2shell.py --help
 ```
 
-No dependencies. Python 3.8+ standard library only, no `pip install`.
+Python 3.8+ standard library only, with no `pip install`.
 
 ## Usage
 
@@ -158,7 +158,7 @@ python3 comment2shell.py --scan -t https://target.com
 python3 comment2shell.py --scan -f targets.txt --threads 20
 
 # From a pipeline
-subfinder -d targets.txt | httpx -title | \
+subfinder -dL targets.txt | httpx -title | \
   grep -i wordpress | python3 comment2shell.py --scan --stdin
 
 # JSON output
@@ -247,7 +247,7 @@ python3 comment2shell.py --exec -t https://target.com \
 python3 comment2shell.py --ioc -t https://target.com
 ```
 
-## Comment approval bypass
+### Comment approval bypass
 
 New comments from first-time commenters are usually held for moderation.
 The tool has three routes around that:
@@ -279,7 +279,7 @@ run `bash clean.sh` to clear older comments between runs.
 
 ## Detection
 
-### Server-side IoC
+### Server-side IOC
 
 ```bash
 # Suspicious comment submissions (newline in blockquote cite)
@@ -296,7 +296,7 @@ find /var/www/html/wp-content/plugins/ -maxdepth 2 -name "*.php" \
   -not -path "*/hello*"
 ```
 
-### Network IoC
+### Network IOC
 
 ```
 # Unusual POST to wp-comments-post.php with blockquote + onfocus
@@ -320,11 +320,11 @@ nuclei -t nuclei/CVE-2026-93485.yaml -u https://target.com
 
 ```bash
 # Vulnerable (before 7.1.1):
-grep -n 'blockquote(\[^>\]\*)' wp-includes/formatting.php
+grep -n 'blockquote([^>]*)' wp-includes/formatting.php
 # Should show: |<p><blockquote([^>]*)>|
 
 # Patched (7.1.1+):
-grep -n 'blockquote((?:\[^>"'\'')' wp-includes/formatting.php
+grep -n 'blockquote((?:' wp-includes/formatting.php
 # Should show: !<p><blockquote((?:[^>"']|"[^"]*"|'[^']*')*)>
 ```
 
@@ -381,8 +381,7 @@ add_filter( 'comment_text', 'wpautop', 30 );        // THE BUG
 
 ## Affected versions
 
-The fix shipped in 7.1.1 across 25 branches. Every release from 4.7.0
-through 7.1.0 is affected.
+Backports cover 25 branches, down to 4.7.36:
 
 | Branch | Vulnerable <= | Fixed |
 |--------|-------------|-------|
@@ -418,9 +417,11 @@ through 7.1.0 is affected.
 Comment2Shell/
 |-- comment2shell.py      scan, probe, exploit, shell, IOC check
 |-- README.md
+|-- CHANGELOG.md
 |-- PLAN.md               weekly maintenance plan
 |-- SECURITY.md           disclosure policy
 |-- BROWSER_VALIDATION.md manual browser validation steps
+|-- tests/                unit tests for the payload builders
 |-- docker/               vulnerable WordPress 7.1.0 lab
 |   |-- docker-compose.yml
 |   |-- setup.sh
