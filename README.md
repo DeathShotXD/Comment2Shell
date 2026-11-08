@@ -8,7 +8,7 @@ browser uploads a webshell plugin, runs a command, and deletes the shell
 again. The whole chain is one dependency-free Python file.
 
 <p align="center">
-  <img src="assets/logo.jpg" alt="Comment2Shell logo" width="340">
+  <img src="assets/logo.jpg" alt="Comment2Shell logo" width="100%">
 </p>
 
 <p align="center">
